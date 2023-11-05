@@ -3,7 +3,21 @@
 #include <time.h>
 #include <stdlib.h>
 
-int main() {
+int main(int argc, char *argv[]) {
+    int sleep_ms = 100;
+
+    // If there's a command line argument, use it as the sleep time
+    if (argc > 1) {
+        sleep_ms = atoi(argv[1]);
+        if (sleep_ms <= 0) {
+            fprintf(stderr, "Invalid sleep duration provided.  Using default of 100 (ms.)\n");
+            sleep_ms = 100;
+        }
+    }
+    else {
+        fprintf(stderr, "Using default sleep value of 100 (ms)\n");
+    }
+    
     // Delete the log.txt file if it exists
     remove("./logs/log.txt");
 
@@ -19,7 +33,7 @@ int main() {
         fprintf(stderr, "[%ld] [%d] Wrote to stderr.\n", timestamp, count);
         fprintf(f, "[%ld] [%d] Wrote to stderr.\n", timestamp, count);
         fflush(f);
-        usleep(100 * 1000); // Sleep for 100ms
+        usleep(sleep_ms * 1000); 
         count++;
     }
 
