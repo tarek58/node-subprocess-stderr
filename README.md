@@ -20,7 +20,7 @@ The solution is to simply bind an event handler to stderr such as:
 Now the data is being 'handled' and won't accumulate.  The child process can continuously push data to `stderr` without issues.
 
 ## Demo (of the problem)
-First, compile the C app using `gcc writer.c -o writer`.  Next, launch the node app using `node app.js`.  This action causes Node to start the C writer as a child process.  The C writer will write to both `stderr` and to a file.  `stderr` will eventually block once the Node buffer is full.  Since a write is done to a log file each time after a successful `stderr` write, you can see "how far along" the writes got by tailing the `./logs/log.txt` file.
+First, compile the C app running `gcc writer.c -o writer`.  Next, launch the node app using `node app.js`.  This action causes Node to start the C writer as a child process.  The C writer will write to both `stderr` and to a file.  `stderr` will eventually block once the Node buffer is full.  Since a write is done to a log file each time after a successful `stderr` write, you can see "how far along" the writes got by tailing the `./logs/log.txt` file (`tail logs/log.txt` in a new Terminal window).
 
 On my machine configuration, the app will reach no more than 735 iterations before blocking indefinitely, since the data size of those 735 iterations is enough to fill the default buffer.
 
